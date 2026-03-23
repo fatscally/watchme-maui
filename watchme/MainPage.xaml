@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="watchme.MainPage"
+             Title="watchme">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="24">
+
+            <Frame Padding="24"
+                   CornerRadius="24"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="18">
+
+                    <Image Source="{Binding IsOn, Converter={StaticResource BoolToIconConverter}}"
+                           HeightRequest="100"
+                           HorizontalOptions="Center" />
+
+                    <Label Text="{Binding StatusText}"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center" />
+
+                    <Label Text="{Binding LastEventDisplay}"
+                           FontSize="14"
+                           HorizontalOptions="Center"
+                           TextColor="{StaticResource SecondaryTextColor}" />
+
+                    <Label Text="iPhone and Apple Watch stay in sync"
+                           FontSize="12"
+                           HorizontalOptions="Center"
+                           TextColor="{StaticResource SecondaryTextColor}" />
+
+                    <Grid ColumnDefinitions="*,Auto"
+                          RowDefinitions="Auto"
+                          Margin="0,8,0,0">
+                        <Label Text="Power"
+                               VerticalOptions="Center"
+                               FontSize="18" />
+
+                        <Switch Grid.Column="1"
+                                IsToggled="{Binding IsOn}"
+                                Toggled="OnToggled"
+                                HorizontalOptions="End" />
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <HorizontalStackLayout Spacing="16">
+
+                <Button Text="Turn On"
+                        Command="{Binding TurnOnCommand}"
+                        BackgroundColor="{Binding IsOn, Converter={StaticResource BoolToGreenGrayConverter}}"
+                        TextColor="White"
+                        CornerRadius="14"
+                        HeightRequest="90"
+                        HorizontalOptions="FillAndExpand" />
+
+                <Button Text="Turn Off"
+                        Command="{Binding TurnOffCommand}"
+                        BackgroundColor="{Binding IsOn, Converter={StaticResource BoolToGrayRedConverter}}"
+                        TextColor="White"
+                        CornerRadius="14"
+                        HeightRequest="90"
+                        HorizontalOptions="FillAndExpand" />
+
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
