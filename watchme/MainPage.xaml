@@ -47,23 +47,23 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <HorizontalStackLayout Spacing="16">
+            <HorizontalStackLayout Spacing="16" HorizontalOptions="Center">
 
                 <Button Text="Turn On"
                         Command="{Binding TurnOnCommand}"
                         BackgroundColor="{Binding IsOn, Converter={StaticResource BoolToGreenGrayConverter}}"
                         TextColor="White"
-                        CornerRadius="14"
-                        HeightRequest="90"
-                        HorizontalOptions="FillAndExpand" />
+                        CornerRadius="30"
+                        WidthRequest="150"
+                        HeightRequest="90"    />
 
                 <Button Text="Turn Off"
                         Command="{Binding TurnOffCommand}"
                         BackgroundColor="{Binding IsOn, Converter={StaticResource BoolToGrayRedConverter}}"
                         TextColor="White"
-                        CornerRadius="14"
-                        HeightRequest="90"
-                        HorizontalOptions="FillAndExpand" />
+                        CornerRadius="30"
+                        WidthRequest="150"
+                        HeightRequest="90"   />
 
             </HorizontalStackLayout>
 

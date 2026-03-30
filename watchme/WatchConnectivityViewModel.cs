@@ -5,69 +5,40 @@ namespace watchme;
 
 public partial class WatchConnectivityViewModel : ObservableObject
 {
-    private readonly WatchConnectivityManager manager;
+    private readonly WatchConnectivityManager _manager;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(StatusText))]
     private bool isOn;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(LastEventDisplay))]
     private string? lastEventTime;
 
-    public string StatusText => IsOn ? "Power is ON" : "Power is OFF";
-
-    public string LastEventDisplay =>
-        string.IsNullOrWhiteSpace(LastEventTime)
-            ? "No events yet"
-            : $"Last change: {LastEventTime}";
+    public string StatusText => IsOn ? "On" : "Off";
+    public string LastEventDisplay => LastEventTime is null ? "" : $"Last changed at {LastEventTime}";
 
     public WatchConnectivityViewModel()
     {
-        manager = WatchConnectivityManager.Instance;
+        _manager = WatchConnectivityManager.Instance;
 
-        IsOn = manager.IsOn;
-        LastEventTime = manager.LastEventTime;
-
-        manager.PowerStateChanged += OnPowerStateChanged;
-    }
-
-    private void OnPowerStateChanged(object? sender, PowerStateChangedEventArgs e)
-    {
-        MainThread.BeginInvokeOnMainThread(() =>
+        // Receive state pushed from the watch
+        _manager.StateChanged += (on, time) =>
         {
-            IsOn = e.IsOn;
-            LastEventTime = e.LastEventTime;
-        });
+            IsOn = on;
+            LastEventTime = time;
+        };
     }
 
-    partial void OnIsOnChanged(bool value)
+    public void SetPower(bool on)
     {
-        OnPropertyChanged(nameof(StatusText));
-    }
-
-    partial void OnLastEventTimeChanged(string? value)
-    {
-        OnPropertyChanged(nameof(LastEventDisplay));
+        IsOn = on;
+        _manager.SendPowerState(on);
     }
 
     [RelayCommand]
-    private void TurnOn()
-    {
-        manager.SendPowerState(true);
-    }
+    private void TurnOn() => SetPower(true);
 
     [RelayCommand]
-    private void TurnOff()
-    {
-        manager.SendPowerState(false);
-    }
-
-    public void SetPower(bool value)
-    {
-        manager.SendPowerState(value);
-    }
-
-
-    
-
-
+    private void TurnOff() => SetPower(false);
 }

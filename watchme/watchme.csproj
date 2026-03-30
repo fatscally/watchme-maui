@@ -23,19 +23,25 @@
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
-		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
-		<WindowsPackageType>None</WindowsPackageType>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
 
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)'=='net10.0-ios'">
-	  <ProvisioningType>automatic</ProvisioningType>
+	  <ProvisioningType>manual</ProvisioningType>
 	  <CodesignKey>Apple Development: Created via API (F3RK2FUJND)</CodesignKey>
 	  <CodesignProvision>VS: com.theclubreferee.ioswatch.watchme Development</CodesignProvision>
 	</PropertyGroup>
-
+	
+	
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+		<BundleResource Include="Platforms\iOS\Watch\watchme-standalone.app\**">
+			<LogicalName>Watch\watchme-standalone.app\%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+		</BundleResource>
+	</ItemGroup>
+	
+	
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
